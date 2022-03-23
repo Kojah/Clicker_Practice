@@ -7,11 +7,12 @@ public class GameData
 {
     public BigDouble money;
 
-    public BigDouble clickUpgradeLevel;
+    public List<BigDouble> clickUpgradeLevel;
 
     public GameData()
     {
         money = 0;
-        clickUpgradeLevel = 0;
+
+        clickUpgradeLevel = Helpers.CreateList<BigDouble>(3);
     }
 }

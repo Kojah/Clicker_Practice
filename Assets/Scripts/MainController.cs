@@ -32,7 +32,7 @@ public class MainController : MonoBehaviour
 
     private void Update()
     {
-        moneyText.text = $"${data.money}";
+        moneyText.text = "$ " + data.money.ToString("F2");
     }
 
     public void AddMoney()
@@ -40,6 +40,14 @@ public class MainController : MonoBehaviour
         data.money += ClickPower();
     }
 
-    public BigDouble ClickPower() => 1 + data.clickUpgradeLevel;
+    public BigDouble ClickPower() 
+    {
+        BigDouble total = 1;
+        for(int i = 0; i < data.clickUpgradeLevel.Count; i++)
+        {
+            total += UpgradesManager.Instance.clickUpgradesBasePower[i] * data.clickUpgradeLevel[i];
+        }
+        return total;
+    }
 
 }
