@@ -6,12 +6,15 @@ using BreakInfinity;
 
 public class MainController : MonoBehaviour
 {
+    public UpgradesManager upgradesManager;
     public GameData data;
     [SerializeField] TMP_Text moneyText;
+
 
     private void Start()
     {
         data = new GameData();
+        upgradesManager.StartUpgradeManager();
     }
 
     private void Update()
@@ -21,6 +24,9 @@ public class MainController : MonoBehaviour
 
     public void AddMoney()
     {
-        data.money += 1;
+        data.money += ClickPower();
     }
+
+    public BigDouble ClickPower() => 1 + data.clickUpgradeLevel;
+
 }
