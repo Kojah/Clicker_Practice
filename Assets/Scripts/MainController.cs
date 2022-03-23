@@ -12,14 +12,11 @@ public class MainController : MonoBehaviour
     private void Start()
     {
         data = new GameData();
-        data.money = BigDouble.Pow(1, 55000);
     }
 
     private void Update()
     {
         moneyText.text = $"${data.money}";
-        data.money *= 1000;
-        Debug.Log(data.money);
     }
 
     public void AddMoney()

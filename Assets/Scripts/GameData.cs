@@ -7,8 +7,11 @@ public class GameData
 {
     public BigDouble money;
 
+    public BigDouble clickUpgradeLevel;
+
     public GameData()
     {
         money = 0;
+        clickUpgradeLevel = 0;
     }
 }
