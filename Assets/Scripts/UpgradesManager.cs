@@ -5,7 +5,20 @@ using BreakInfinity;
 
 public class UpgradesManager : MonoBehaviour
 {
-    public MainController  mainController;
+    private static UpgradesManager instance;
+    public static UpgradesManager Instance { get { return instance; } }
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
 
     public Upgrades clickUpgrade;
 
@@ -27,19 +40,19 @@ public class UpgradesManager : MonoBehaviour
 
     public void UpdateVentureUI()
     {
-        clickUpgrade.LevelText.text = $"{mainController.data.clickUpgradeLevel}/10";
+        clickUpgrade.LevelText.text = $"{MainController.Instance.data.clickUpgradeLevel}/10";
         clickUpgrade.CostText.text = Cost().ToString("F2");
         clickUpgrade.BuyText.text = "Buy\nx1";
     }
 
-    public BigDouble Cost () => clickUpgradeBaseCost * BigDouble.Pow(clickUpgradeCostMult, mainController.data.clickUpgradeLevel);
+    public BigDouble Cost () => clickUpgradeBaseCost * BigDouble.Pow(clickUpgradeCostMult, MainController.Instance.data.clickUpgradeLevel);
 
     public void BuyUpgrade()
     {
-        if(mainController.data.money >= Cost())
+        if(MainController.Instance.data.money >= Cost())
         {
-            mainController.data.money -= Cost();
-            mainController.data.clickUpgradeLevel += 1;
+            MainController.Instance.data.money -= Cost();
+            MainController.Instance.data.clickUpgradeLevel += 1;
         }
 
         UpdateVentureUI();

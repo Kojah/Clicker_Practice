@@ -6,15 +6,28 @@ using BreakInfinity;
 
 public class MainController : MonoBehaviour
 {
-    public UpgradesManager upgradesManager;
+    private static MainController instance;
+    public static MainController Instance {  get { return instance; } }
+
     public GameData data;
     [SerializeField] TMP_Text moneyText;
+
+    private void Awake()
+    {
+        if(instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        } else
+        {
+            instance = this;
+        }
+    }
 
 
     private void Start()
     {
         data = new GameData();
-        upgradesManager.StartUpgradeManager();
+        UpgradesManager.Instance.StartUpgradeManager();
     }
 
     private void Update()
