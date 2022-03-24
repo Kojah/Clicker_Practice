@@ -7,11 +7,11 @@ public static class Helpers
 {
     public static List<T> CreateList<T>(int capacity) => Enumerable.Repeat(default(T), capacity).ToList();
 
-    public static void UpgradeCheck<T>(ref List<T> list, int length) where T: new()
+    public static void UpgradeCheck<T>(List<T> list, int length) where T: new()
     {
         try
         {
-            if (list.Count == 0) list = Helpers.CreateList<T>(length);
+            if (list.Count == 0) list = new T[length].ToList();
             while (list.Count < length) list.Add(new T());
         }
         catch
