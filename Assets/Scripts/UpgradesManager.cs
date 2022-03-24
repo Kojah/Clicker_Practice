@@ -36,25 +36,32 @@ public class UpgradesManager : MonoBehaviour
     public BigDouble[] clickUpgradeBaseCost;
     public BigDouble[] clickUpgradeCostMult;
     public BigDouble[] clickUpgradesBasePower;
+    public BigDouble[] clickUpgradesUnlock;
+
 
     public BigDouble[] productionUpgradeBaseCost;
     public BigDouble[] productionUpgradeCostMult;
     public BigDouble[] productionUpgradesBasePower;
+    public BigDouble[] productionUpgradesUnlock;
+
 
     public void StartUpgradeManager()
     {
         clickUpgradeBaseCost = new BigDouble[] { 10, 50, 100 };
         clickUpgradeCostMult = new BigDouble[] { 1.25, 1.35, 1.55 };
         clickUpgradesBasePower = new BigDouble[] { 1, 5, 10 };
+        clickUpgradesUnlock = new BigDouble[] { 0, 25, 50 };
 
         productionUpgradeBaseCost = new BigDouble[] { 25, 100, 1000 };
         productionUpgradeCostMult = new BigDouble[] { 1.5, 1.75, 2 };
         productionUpgradesBasePower = new BigDouble[] { 1, 2, 10 };
+        productionUpgradesUnlock = new BigDouble[] { 15, 50, 500 };
 
         for (int i = 0; i < MainController.Instance.data.clickUpgradeLevel.Count; i++)
         {
             Upgrades upgrade = Instantiate(clickUpgradePrefab, clickUpgradesPanel);
             upgrade.UpgradeID = i;
+            upgrade.gameObject.SetActive(false);
             clickUpgrades.Add(upgrade);
         }
 
@@ -62,11 +69,15 @@ public class UpgradesManager : MonoBehaviour
         {
             Upgrades upgrade = Instantiate(productionUpgradesPrefab, productionUpgradesPanel);
             upgrade.UpgradeID = i;
+            upgrade.gameObject.SetActive(false);
             productionUpgrades.Add(upgrade);
         }
 
         clickUpgradesScroll.normalizedPosition = new Vector2(0, 0);
         productionUpgradesScroll.normalizedPosition = new Vector2(0, 0);
+
+        productionUpgradesScroll.gameObject.SetActive(false);
+
         UpdateVentureUI("click");
         UpdateVentureUI("production");
 
@@ -75,7 +86,15 @@ public class UpgradesManager : MonoBehaviour
 
     public void Update()
     {
-        
+        for(int i = 0; i < clickUpgrades.Count; i++)
+        {
+            if(!clickUpgrades[i].gameObject.activeSelf) clickUpgrades[i].gameObject.SetActive(MainController.Instance.data.money >= clickUpgradesUnlock[i]);
+        }
+
+        for (int i = 0; i < productionUpgrades.Count; i++)
+        {
+            if (!productionUpgrades[i].gameObject.activeSelf) productionUpgrades[i].gameObject.SetActive(MainController.Instance.data.money >= productionUpgradesUnlock[i]);
+        }
     }
 
     public void UpdateVentureUI(string type, int upgradeID = -1)
